@@ -15,31 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-
-Route::get('/rota1', function() {
-	return 'rota01';
+Route::group(['middleware' => 'auth'], function () {
+    
+	//Rotas de Usuário
+    Route::group(['prefix'=> 'users', 'where'=>['id'=>'0-9+']], function () {
+			Route::get('', ['as' => 'users.index', 'uses' => 'UserController@index']);
+			Route::get('/list',['as' => 'users.list', 'uses' => 'UserController@listar']);
+			Route::post('/create', ['as' => 'users.store', 'uses' => 'UserController@store']);
+			Route::post('/edit', ['as' => 'users.update', 'uses' => 'UserController@update']);
+			Route::post('/delete', ['as' => 'users.destroy', 'uses' => 'UserController@destroy',]);
+			Route::post('/ativar', ['as' => 'users.ativar', 'uses' => 'UserController@ativar',]);
+			
+		});
 });
-
-Route::group(['prefix' =>'rota1'], function(){
-	
-	Route::get('/dado', function(){
-		return 'dado1';
-	});
-
-	Route::get('/dado2', function(){
-		return 'dado2';
-	});
-
-});
-
-Route::get('/rota1/dado', function() {
-	return 'dado1';
-});
-
-Route::get('/rota1/dado2', function() {
-	return 'dado2';
-});
-
-
